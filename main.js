@@ -1,7 +1,9 @@
+
 let allClear = true;
 let operating = false;
-let firstNumber = 0;
-let secondNumber = 0;
+let firstNumber = "0";
+let secondNumber = "";
+let currentOperator = null;
 function add(num1, num2){
     return Number(num1) + Number(num2);
 }
@@ -27,8 +29,22 @@ function displayNumber(number){
         allClear = false;
         clearBtn.textContent = "C";
         display.textContent = "";
+        firstNumber = "";
     }
     display.textContent += number;
+    if(!operating){
+            firstNumber += number;
+            console.log(firstNumber);
+        }
+        else {
+            display.textContent = number;
+            secondNumber += number;
+            currentOperator.style.backgroundColor = "#FF9500"
+            currentOperator.style.color = "white";
+
+        }
+        console.log(`first number: ${firstNumber}`)
+        console.log(`second number: ${secondNumber}`)
 }
 
 function clear(){
@@ -36,6 +52,19 @@ function clear(){
         display.textContent = "0";
         allClear = true;
         clearBtn.textContent = "AC"
+        if(operating) {
+            secondNumber = "";
+            operating = false;
+        }
+        else{
+            firstNumber = "";
+        }
+    }
+    else {
+        display.textContent = "";
+        currentOperator.style.backgroundColor = "#FF9500";
+        currentOperator.style.color = "white";
+        currentOperator = null;
     }
 }
 
@@ -46,6 +75,13 @@ function decimal(){
     allClear = false;
     clearBtn.textContent = "C";
     display.textContent += ".";
+
+    if (operating){
+        secondNumber += ".";
+    }
+    else{
+        firstNumber += ".";
+    }
 }
 
 function zero(){
@@ -53,7 +89,35 @@ function zero(){
         return;
     }
     display.textContent += "0";
+    if (operating){
+        secondNumber += "0";
+    }
+    else{
+        firstNumber += "0";
+    }
 }
+
+function clickOperator(operator){
+    if (currentOperator != null){
+        currentOperator.style.backgroundColor = "#FF9500";
+        currentOperator.style.color = "white";
+    }
+    operating = true;
+    operator.style.backgroundColor = "white";
+    operator.style.color = "#FF9500";
+    currentOperator = operator;
+    console.log(currentOperator)
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -86,6 +150,12 @@ const zeroBtn = document.querySelector("#zero");
 zeroBtn.addEventListener("click", () => zero());
 zeroBtn.addEventListener("mousedown", () => zeroBtn.style.backgroundColor = "#AAAAAA");
 zeroBtn.addEventListener("mouseup", () => zeroBtn.style.backgroundColor = "#505050");
+
+const operators = document.querySelectorAll(".operator");
+for(let i = 0; i< operators.length; i++){
+    let operator = operators[i]
+    operator.addEventListener("click", () => clickOperator(operator))
+}
 
 
 
