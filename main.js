@@ -39,6 +39,24 @@ function clear(){
     }
 }
 
+function decimal(){
+    if(display.textContent.includes(".")){
+        return;
+    }
+    allClear = false;
+    clearBtn.textContent = "C";
+    display.textContent += ".";
+}
+
+function zero(){
+    if(allClear){
+        return;
+    }
+    display.textContent += "0";
+}
+
+
+
 
 
 const display = document.querySelector("#display")
@@ -54,7 +72,21 @@ for (let i = 0; i < numbers.length; i++){
 
 const clearBtn = document.querySelector("#clear");
 clearBtn.addEventListener("click",() => clear())
+
+
 clearBtn.addEventListener("mousedown", () => clearBtn.style.backgroundColor = "#F4F4F2")
 clearBtn.addEventListener("mouseup", () => clearBtn.style.backgroundColor = "#D4D4D2")
+
+const decimalBtn = document.querySelector("#decimal");
+decimalBtn.addEventListener("click",() => decimal());
+decimalBtn.addEventListener("mousedown", () => decimalBtn.style.backgroundColor = "#AAAAAA");
+decimalBtn.addEventListener("mouseup", () => decimalBtn.style.backgroundColor = "#505050");
+
+const zeroBtn = document.querySelector("#zero");
+zeroBtn.addEventListener("click", () => zero());
+zeroBtn.addEventListener("mousedown", () => zeroBtn.style.backgroundColor = "#AAAAAA");
+zeroBtn.addEventListener("mouseup", () => zeroBtn.style.backgroundColor = "#505050");
+
+
 
 
