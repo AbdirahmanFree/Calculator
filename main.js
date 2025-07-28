@@ -5,6 +5,7 @@ let firstNumber = "0";
 let secondNumber = "";
 let currentOperator = null;
 const display = document.querySelector("#display")
+const clearBtn = document.querySelector("#clear");
 display.textContent = "0"
 function add(num1, num2){
     return Number(num1) + Number(num2);
@@ -32,21 +33,6 @@ function checkState(){
 }
 
 
-function allClear_ClearBTn(){
-    if(allClear){
-        allClear = true;
-        operating = false;
-        firstNumber = "0";
-        secondNumber = "";
-        currentOperator = null;
-    }
-    else {
-        display.textContent = "0";
-
-
-    }
-
-}
 
 
 
@@ -76,24 +62,17 @@ function displayNumber(number){
 }
 
 function clear(){
-    if(!allClear){
-        display.textContent = "0";
-        allClear = true;
-        clearBtn.textContent = "AC"
-        if(operating) {
-            secondNumber = "";
-            operating = false;
-        }
-        else{
-            firstNumber = "";
-        }
-    }
-    else {
-        display.textContent = "0";
-        currentOperator.style.backgroundColor = "#FF9500";
-        currentOperator.style.color = "white";
-        currentOperator = null;
-    }
+    clearBtn.textContent = "AC";
+    allClear = true;
+    operating = false;
+    firstNumber = "0";
+    secondNumber = "";
+    currentOperator = null;
+    display.textContent = "0"
+    currentOperator.style.backgroundColor = "#FF9500";
+    currentOperator.style.color = "white";
+    
+    
 }
 
 function decimal(){
@@ -119,30 +98,33 @@ function decimal(){
 }
 
 function zero(){
-    if(allClear){
+    if(allClear ){
         return;
     }
-    else{
-        if (operating){
-            if (secondNumber == "" || secondNumber == "0"){
-                return
-            }
-            else {
-                secondNumber +="0";
-            }
+    else if (!operating){
+        firstNumber +="0";
+        display.textContent += "0";
+    }
+
+    else if (operating){
+        if (secondNumber == "0"){
+            console.log("haaahahhaha")
+            return;
+        }
+        else if (secondNumber == ""){
+            console.log("hoho")
+            display.textContent = "";
+            display.textContent +="0"
+            secondNumber = "0";
         }
         else {
-            if (firstNumber == "0"){
-                return
-            }
-            else {
-                secondNumber +="0";
-            }
+            display.textContent += "0";
+            secondNumber += "0";
         }
     }
+    checkState()
     
     
-   
 }
 
 function clickOperator(operator){
@@ -205,7 +187,7 @@ for (let i = 0; i < numbers.length; i++){
     
 }
 
-const clearBtn = document.querySelector("#clear");
+
 clearBtn.addEventListener("click",() => clear())
 
 
