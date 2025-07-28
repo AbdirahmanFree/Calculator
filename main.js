@@ -4,6 +4,8 @@ let operating = false;
 let firstNumber = "0";
 let secondNumber = "";
 let currentOperator = null;
+const display = document.querySelector("#display")
+display.textContent = "0"
 function add(num1, num2){
     return Number(num1) + Number(num2);
 }
@@ -20,11 +22,37 @@ function divide(num1, num2){
     return Number(num1) / Number(num2);
 }
 
-function operate(operator, num1, num2){
-    return operator(num1, num2);
+function checkState(){
+    console.log(`first number: ${firstNumber}`);
+    console.log(`second number: ${secondNumber}`);
+    console.log(`currentOperator: ${currentOperator}`)
+    console.log(`allClear: ${allClear}`);
+    console.log(`operating: ${operating}`);
+
 }
 
+
+function allClear_ClearBTn(){
+    if(allClear){
+        allClear = true;
+        operating = false;
+        firstNumber = "0";
+        secondNumber = "";
+        currentOperator = null;
+    }
+    else {
+        display.textContent = "0";
+
+
+    }
+
+}
+
+
+
+
 function displayNumber(number){
+
     if(allClear){
         allClear = false;
         clearBtn.textContent = "C";
@@ -61,7 +89,7 @@ function clear(){
         }
     }
     else {
-        display.textContent = "";
+        display.textContent = "0";
         currentOperator.style.backgroundColor = "#FF9500";
         currentOperator.style.color = "white";
         currentOperator = null;
@@ -72,29 +100,49 @@ function decimal(){
     if(display.textContent.includes(".")){
         return;
     }
-    allClear = false;
-    clearBtn.textContent = "C";
-    display.textContent += ".";
+    else {
+        allClear = false;
+        clearBtn.textContent = "C";
+        display.textContent += ".";
 
-    if (operating){
-        secondNumber += ".";
-    }
-    else{
-        firstNumber += ".";
-    }
+        if (operating){
+            secondNumber += ".";
+            console.log(`second number: ${secondNumber}`)
+        }
+        else{
+            firstNumber += ".";
+            console.log(`first number: ${firstNumber}`)
+        }
+        
+        }
+    
 }
 
 function zero(){
     if(allClear){
         return;
     }
-    display.textContent += "0";
-    if (operating){
-        secondNumber += "0";
-    }
     else{
-        firstNumber += "0";
+        if (operating){
+            if (secondNumber == "" || secondNumber == "0"){
+                return
+            }
+            else {
+                secondNumber +="0";
+            }
+        }
+        else {
+            if (firstNumber == "0"){
+                return
+            }
+            else {
+                secondNumber +="0";
+            }
+        }
     }
+    
+    
+   
 }
 
 function clickOperator(operator){
@@ -109,6 +157,28 @@ function clickOperator(operator){
     console.log(currentOperator)
 }
 
+function evaluate(operation,num1 ,num2){
+    
+    let answer = 0;
+    console.log(operation)
+    if (operation == 'multiply'){
+        answer = multiply(num1,num2);
+    }
+    else if (operation == 'add'){
+        answer = add(num1,num2);
+    }
+     else if (operation == 'subtract'){
+        answer = subtract(num1,num2);
+    }
+     else if (operation == 'divide'){
+        answer = divide(num1,num2);
+    }
+    firstNumber = String(answer);
+    secondNumber = "";
+    display.textContent = String(answer)
+    currentOperator.style.backgroundColor = "#FF9500";
+    currentOperator.style.color = "white";
+}
 
 
 
@@ -123,7 +193,8 @@ function clickOperator(operator){
 
 
 
-const display = document.querySelector("#display")
+
+
 
 const numbers = document.querySelectorAll(".number")
 for (let i = 0; i < numbers.length; i++){
@@ -155,7 +226,13 @@ const operators = document.querySelectorAll(".operator");
 for(let i = 0; i< operators.length; i++){
     let operator = operators[i]
     operator.addEventListener("click", () => clickOperator(operator))
+
 }
+
+const equalBtn = document.querySelector("#equal");
+equalBtn.addEventListener("click", () => evaluate(currentOperator.id, firstNumber,secondNumber))
+equalBtn.addEventListener("mousedown", () => equalBtn.style.backgroundColor = "#fccd8bff");
+equalBtn.addEventListener("mouseup", () => equalBtn.style.backgroundColor = "#FF9500");
 
 
 
