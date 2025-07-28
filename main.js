@@ -128,18 +128,26 @@ function zero(){
 }
 
 function clickOperator(operator){
+    if(operating){
+        evaluate(currentOperator.id, firstNumber, secondNumber)
+    }
+
+
+
     if (currentOperator != null){
         currentOperator.style.backgroundColor = "#FF9500";
         currentOperator.style.color = "white";
     }
-    operating = true;
+    
     operator.style.backgroundColor = "white";
     operator.style.color = "#FF9500";
     currentOperator = operator;
     console.log(currentOperator)
+    operating = true;
 }
 
 function evaluate(operation,num1 ,num2){
+    
     
     let answer = 0;
     console.log(operation)
