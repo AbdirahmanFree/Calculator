@@ -194,6 +194,17 @@ function changeSign(){
     }
 }
 
+function percentage() {
+    if (operating) {
+        if (secondNumber === "") return; 
+        secondNumber = String(divide(secondNumber, 100));
+        display.textContent = secondNumber;
+    } else {
+        firstNumber = String(divide(firstNumber, 100));
+        display.textContent = firstNumber;
+    }
+}
+
 
 
 
@@ -255,6 +266,8 @@ plusMinusBtn.addEventListener("mousedown", () => plusMinusBtn.style.backgroundCo
 plusMinusBtn.addEventListener("mouseup", () => plusMinusBtn.style.backgroundColor = "#D4D4D2")
 
 
-
-
+const percentBtn = document.querySelector("#percent");
+percentBtn.addEventListener("click", () => percentage())
+percentBtn.addEventListener("mousedown", () => percentBtn.style.backgroundColor = "#F4F4F2")
+percentBtn.addEventListener("mouseup", () => percentBtn.style.backgroundColor = "#D4D4D2")
 
