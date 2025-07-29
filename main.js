@@ -170,6 +170,31 @@ function evaluate(operation,num1 ,num2){
     currentOperator.style.color = "white";
 }
 
+function changeSign(){
+    if (operating) {
+        if (secondNumber === "") {
+            secondNumber = "-0";
+        } else if (secondNumber.startsWith("-")) {
+            secondNumber = secondNumber.slice(1);
+        } else {
+            secondNumber = "-" + secondNumber;
+        }
+        display.textContent = secondNumber;
+        console.log(`second number: ${secondNumber}`);
+    } else {
+        if (firstNumber === "" || firstNumber === "0") {
+            firstNumber = "-0";
+        } else if (firstNumber.startsWith("-")) {
+            firstNumber = firstNumber.slice(1);
+        } else {
+            firstNumber = "-" + firstNumber;
+        }
+        display.textContent = firstNumber;
+        console.log(`first number: ${firstNumber}`);
+    }
+}
+
+
 
 
 
@@ -223,6 +248,12 @@ const equalBtn = document.querySelector("#equal");
 equalBtn.addEventListener("click", () => evaluate(currentOperator.id, firstNumber,secondNumber))
 equalBtn.addEventListener("mousedown", () => equalBtn.style.backgroundColor = "#fccd8bff");
 equalBtn.addEventListener("mouseup", () => equalBtn.style.backgroundColor = "#FF9500");
+
+const plusMinusBtn = document.querySelector("#sign");
+plusMinusBtn.addEventListener("click", () => changeSign());
+plusMinusBtn.addEventListener("mousedown", () => plusMinusBtn.style.backgroundColor = "#F4F4F2")
+plusMinusBtn.addEventListener("mouseup", () => plusMinusBtn.style.backgroundColor = "#D4D4D2")
+
 
 
 
