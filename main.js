@@ -32,33 +32,48 @@ function checkState(){
 
 }
 
+function overflowCheck(num) {
+  const digits = (num || "").replace(/\D/g, "").length; // keep only 0-9
+  return digits >= 9;
+}
+
+
+
+function scientificNotation(num) {
+    let numberPart = num[0]
+    let decimalPart = num.slice(1,9)
+    let power = num.slice(1).length
+    return `${numberPart}.${decimalPart}e${power}`
+
+}
 
 
 
 
 
-function displayNumber(number){
 
-    if(allClear){
-        allClear = false;
-        clearBtn.textContent = "C";
-        display.textContent = "";
-        firstNumber = "";
-    }
-    display.textContent += number;
-    if(!operating){
-            firstNumber += number;
-            console.log(firstNumber);
-        }
-        else {
-            display.textContent = number;
-            secondNumber += number;
-            currentOperator.style.backgroundColor = "#FF9500"
-            currentOperator.style.color = "white";
 
-        }
-        console.log(`first number: ${firstNumber}`)
-        console.log(`second number: ${secondNumber}`)
+function displayNumber(digit) {
+  if (allClear) {
+    allClear = false;
+    clearBtn.textContent = "C";
+    firstNumber = "";
+    display.textContent = "";
+  }
+
+  if (!operating) {
+   
+    if (overflowCheck(firstNumber)) return;
+    firstNumber += digit;
+    display.textContent = firstNumber;
+  } else {
+    if (overflowCheck(secondNumber)) return;
+    secondNumber += digit;
+    display.textContent = secondNumber;
+
+    currentOperator.style.backgroundColor = "white";
+    currentOperator.style.color = "#FF9500";
+  }
 }
 
 function clear(){
@@ -76,9 +91,13 @@ function clear(){
 }
 
 function decimal(){
+    const target = operating ? secondNumber : firstNumber;
     if(display.textContent.includes(".")){
         return;
     }
+
+    if (overflowCheck(target)) return;
+
     else {
         allClear = false;
         clearBtn.textContent = "C";
@@ -97,34 +116,22 @@ function decimal(){
     
 }
 
-function zero(){
-    if(allClear ){
-        return;
-    }
-    else if (!operating){
-        firstNumber +="0";
-        display.textContent += "0";
-    }
+function zero() {
+  if (allClear) return;
 
-    else if (operating){
-        if (secondNumber == "0"){
-            console.log("haaahahhaha")
-            return;
-        }
-        else if (secondNumber == ""){
-            console.log("hoho")
-            display.textContent = "";
-            display.textContent +="0"
-            secondNumber = "0";
-        }
-        else {
-            display.textContent += "0";
-            secondNumber += "0";
-        }
+  if (!operating) {
+    if (overflowCheck(firstNumber)) return;
+    firstNumber += "0";
+    display.textContent = firstNumber;
+  } else {
+    if (secondNumber === "") {
+      secondNumber = "0";
+    } else {
+      if (overflowCheck(secondNumber)) return;
+      secondNumber += "0";
     }
-    checkState()
-    
-    
+    display.textContent = secondNumber;
+  }
 }
 
 function clickOperator(operator){
@@ -163,9 +170,13 @@ function evaluate(operation,num1 ,num2){
      else if (operation == 'divide'){
         answer = divide(num1,num2);
     }
+    
     firstNumber = String(answer);
     secondNumber = "";
-    display.textContent = String(answer)
+    if(overflowCheck(String(answer))) {
+        display.textContent = scientificNotation(String(answer))
+    }
+    else display.textContent = String(answer);
     currentOperator.style.backgroundColor = "#FF9500";
     currentOperator.style.color = "white";
 }
